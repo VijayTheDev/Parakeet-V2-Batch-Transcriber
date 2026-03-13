@@ -396,19 +396,28 @@ class OptimizedSubtitleProcessor:
             word_text = word_info.get('word', word_info.get('char', ''))
             word_end = word_info.get('end', word_info.get('start', 0))
 
-            # Add the word to the current potential segment
+            # Check duration BEFORE adding the word to detect over-limit
+            prospective_duration = word_end - current_segment['start']
+
+            # If adding this word would exceed max_duration and we already have words,
+            # split BEFORE this word so the current segment stays within limits
+            if prospective_duration > max_duration and len(current_segment['words']) > 0:
+                print_debug(f"Split reason: Would exceed max duration {prospective_duration:.1f}s")
+                segment_text = ' '.join([w.get('word', w.get('char', '')) for w in current_segment['words']])
+                split_segments.append({'start': current_segment['start'], 'end': current_segment['words'][-1].get('end', current_segment['start']), 'segment': segment_text.strip()})
+                # Start new segment with this word
+                current_segment = {'words': [word_info], 'start': word_info.get('start', 0)}
+                continue
+
+            # Add the word to the current segment
             current_segment['words'].append(word_info)
             current_duration = word_end - current_segment['start']
 
-            # Determine if we should split after this word
+            # Determine if we should split after this word (natural break points)
             should_split = False
             split_reason = ""
-            # Condition 1: Exceeded max duration, must split
-            if current_duration > max_duration:
-                should_split = True
-                split_reason = f"Exceeded max duration {current_duration:.1f}s"
-            # Condition 2: Approaching max duration and a natural sentence break occurs
-            elif current_duration > max_duration * 0.7:  # 70% is a reasonable threshold
+            # Condition 1: Approaching max duration and a natural sentence break occurs
+            if current_duration > max_duration * 0.7:  # 70% is a reasonable threshold
                 if any(word_text.rstrip().endswith(punct) for punct in SENTENCE_ENDINGS):
                     should_split = True
                     split_reason = f"Sentence ending at {current_duration:.1f}s"
@@ -418,12 +427,12 @@ class OptimizedSubtitleProcessor:
                 elif current_duration > max_duration * 0.9 and any(word_text.rstrip().endswith(punct) for punct in SOFT_SEPARATORS):
                     should_split = True
                     split_reason = f"Soft separator at {current_duration:.1f}s"
-            # Condition 3: Exceeded max word count (last resort)
+            # Condition 2: Exceeded max word count (last resort)
             elif len(current_segment['words']) >= max_words:
                 should_split = True
                 split_reason = f"Reached max words ({max_words})"
 
-            # Perform the split
+            # Perform the split after this word
             if should_split and len(current_segment['words']) > 0:
                 print_debug(f"Split reason: {split_reason}")
                 segment_text = ' '.join([w.get('word', w.get('char', '')) for w in current_segment['words']])
