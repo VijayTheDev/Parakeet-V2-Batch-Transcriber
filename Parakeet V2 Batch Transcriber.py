@@ -50,7 +50,7 @@ MIN_SILENCE_DURATION = 400  # Minimum duration of a silent pause in milliseconds
 
 # Subtitle generation parameters (tuned for anime)
 MAX_SEGMENT_DURATION = 4  # Max duration of a single subtitle line in seconds
-MIN_SEGMENT_DURATION = 0.5  # Min duration of a single subtitle line in seconds (anime has short exclamations)
+MIN_SEGMENT_DURATION = 0.4  # Min duration of a single subtitle line in seconds (anime has short exclamations)
 IDEAL_SEGMENT_DURATION = 3  # Ideal duration of a single subtitle line in seconds
 MAX_WORDS_PER_SEGMENT = 12  # Fallback: max words if no punctuation is found for splitting
 
