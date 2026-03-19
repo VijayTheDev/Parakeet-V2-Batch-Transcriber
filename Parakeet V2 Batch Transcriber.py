@@ -447,7 +447,7 @@ class OptimizedSubtitleProcessor:
 
         # Filter out empty sentences and merge very short ones
         filtered_sentences = []
-        min_sentence_length = 10
+        min_sentence_length = 5
         for sentence in sentences:
             sentence = sentence.strip()
             if not sentence:
