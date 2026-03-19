@@ -42,11 +42,11 @@ AUDIO_EXTENSIONS = ['.wav', '.mp3', '.flac', '.ogg', '.m4a', '.mp4', '.opus', '.
 
 # Long audio processing parameters
 LONG_AUDIO_THRESHOLD = 8 * 60  # 8 minutes, triggers long audio attention optimization
-VERY_LONG_AUDIO_THRESHOLD = 60 * 60  # 60 minutes, triggers pre-transcription splitting
-SEGMENT_TARGET_DURATION = 60 * 60  # Target duration for each split chunk (60 minutes)
-SILENCE_SEARCH_WINDOW = 2 * 60  # Search window for silence around the target split time (±2 minutes)
-SILENCE_THRESHOLD_DB = -25  # dBFS level to be considered silence
-MIN_SILENCE_DURATION = 400  # Minimum duration of a silent pause in milliseconds
+VERY_LONG_AUDIO_THRESHOLD = 45 * 60  # 60 minutes, triggers pre-transcription splitting
+SEGMENT_TARGET_DURATION = 24 * 60  # Target duration for each split chunk (60 minutes)
+SILENCE_SEARCH_WINDOW = 3 * 60  # Search window for silence around the target split time (±2 minutes)
+SILENCE_THRESHOLD_DB = -20  # dBFS level to be considered silence
+MIN_SILENCE_DURATION = 350  # Minimum duration of a silent pause in milliseconds
 
 # Subtitle generation parameters (tuned for anime)
 MAX_SEGMENT_DURATION = 4  # Max duration of a single subtitle line in seconds
