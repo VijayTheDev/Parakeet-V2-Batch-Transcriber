@@ -59,7 +59,7 @@ MAX_WORDS_PER_SEGMENT = 12  # Fallback: max words if no punctuation is found for
 MIN_SUBTITLE_GAP = 0.05  # 50ms minimum gap between consecutive subtitles
 
 # Subtitle readability parameters (character width limits)
-IDEAL_CHARACTERS_PER_SEGMENT = 42  # Preferred subtitle width target (soft threshold)
+IDEAL_CHARACTERS_PER_SEGMENT = 32  # Preferred subtitle width target (soft threshold)
 MAX_CHARACTERS_PER_SEGMENT = 64  # Hard readability limit — subtitles should rarely exceed this
 
 # Punctuation priority for splitting (includes both English and Chinese punctuation)
